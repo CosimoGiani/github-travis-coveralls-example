@@ -1,13 +1,24 @@
 language: java
 
+dist: xenial
+
+services:
+   - xvbf
+   - docker
+
 jdk: openjdk8
 
-#skip installation step
+addons:
+   sonarcloud:
+      organization: "cosimogiani-github"
+      #token: $SONAR_TOKEN
+
 install: true
 
 cache:
    directories:
       - $HOME/.m2
+      - $HOME/.sonar/cache
 
 script:
-   - mvn -f myproject/pom.xml clean verify -Pjacoco
+   - mvn -f myproject/pom.xml clean verify -Pjacoco clean verify coveralls:report sonar:sonar
